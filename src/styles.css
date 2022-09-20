@@ -1,1 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
+app-root{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5vh;
+}
+
+.cdk-overlay-connected-position-bounding-box{
+    height: fit-content !important;
+    width: fit-content !important;
+    position: absolute !important;
+    top: 15vh !important;
+    left: 40vw !important;
+}

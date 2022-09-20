@@ -1,0 +1,12 @@
+.main-reset{
+    width: 20vw;
+    margin: auto;
+    border: none;
+    background-color: #c8f4c8;
+    border-radius: 15px;
+}
+
+.main-reset:first-child{
+    margin-bottom: 2vh;
+    background-color: #f1d4d4;
+}
