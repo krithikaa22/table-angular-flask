@@ -95,5 +95,43 @@ def search():
         usersJson.append(tempObj)
     return usersJson
 
+@app.route('/sort', methods=['GET'])
+def sort():
+    attr = request.args.get('attr')
+    order = request.args.get('order')
+    print(attr, order)
+    if attr == 'task_name':
+        if order == 'ASC':
+            cur.execute("SELECT * FROM users ORDER BY task_name ASC;")
+        else:
+            cur.execute("SELECT * FROM users ORDER BY task_name DESC;")
+    elif attr == 'task_id':
+         if order == 'ASC':
+            cur.execute("SELECT * FROM users ORDER BY id ASC;")
+         else:
+            cur.execute("SELECT * FROM users ORDER BY id DESC;")
+    elif attr == 'task_created_date':
+         if order == 'ASC':
+            cur.execute("SELECT * FROM users ORDER BY task_created_id ASC;")
+         else:
+            cur.execute("SELECT * FROM users ORDER BY task_created_id DESC;")
+    else:
+        if order == 'ASC':
+            cur.execute("SELECT * FROM users ORDER BY task_completed ASC;")
+        else:
+            cur.execute("SELECT * FROM users ORDER BY task_completed DESC;")
+    users = cur.fetchall()
+    print(users)
+    usersJson = []
+    for i in users:
+        tempObj = {
+            'id': i[0],
+            'task_name': i[1],
+            'task_created_date': i[2],
+            'task_completed': i[3]
+        }
+        usersJson.append(tempObj)
+    return usersJson
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=105)

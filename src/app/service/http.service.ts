@@ -41,6 +41,12 @@ export class HttpService {
     return this.http.get(`${this.apiUrl}/search`, {params})
   }
 
+  public sort(attr: string, order: string){
+    let params = new HttpParams().set("attr", attr).set("order", order)
+    console.log(params)
+    return this.http.get(`${this.apiUrl}/sort`, {params})
+  }
+
   handleError(error: any) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {

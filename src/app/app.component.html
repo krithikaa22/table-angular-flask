@@ -1,9 +1,10 @@
 <button nz-button nzSize="small" (click)="resetAll()" class="main-reset">Reset</button>
+<p>Total rows: {{row}}</p>
 <nz-table #basicTable 
   [nzData]="listOfData" 
-  [nzPageSize]="50" 
+  [nzPageSize]="45" 
   [nzPaginationPosition]="'both'"
-  [nzScroll]="{ y: '240px' }"
+  [nzScroll]="{ y: '450px' }"
 >
   <thead>
     <tr>
@@ -14,12 +15,14 @@
       <th *ngFor="let data of columns.column_list" 
       (click)="saveColumn($event)"
       [ngClass]="data.type"
-      [nzSortFn]="sortFn"
       (nzFilterChange)="filterFn($event)"
       [nzFilters]="data.type == 'Boolean' ? listOfFilter : []"
       nzColumnKey={{data.col_name}} [nzCustomFilter]="data.type == 'String' ? 'true' : 'false'"
       >
       {{data.col_name}}
+      <span nz-icon nzType="down" (click)="sortFn($event)">
+         
+      </span>
         <nz-filter-trigger  *ngIf="data.type === 'String'"  
         [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu"
         >

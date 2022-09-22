@@ -16,6 +16,7 @@ export class AppComponent {
   columns :any;
   listOfData : User[];
   listOfDataUnfiltered : User[];
+  row : number = 0;
 
   constructor(private httpservice: HttpService){ 
     this.listOfData = []
@@ -30,7 +31,7 @@ export class AppComponent {
       this.listOfData.forEach(el => {
         el.checked = false
       })
-
+      this.row = this.listOfData.length
       console.log(this.listOfData)
     })
   }
@@ -90,27 +91,31 @@ export class AppComponent {
     this.listOfData = this.listOfDataUnfiltered
   }
 
-  search(): void {
+  async search() {
     this.visible = false;
     console.log(this.searchValue)
-    this.httpservice.search(this.sort, this.searchValue).subscribe((data:any) => {
+    await this.httpservice.search(this.sort, this.searchValue).subscribe((data:any) => {
       console.log(data)
       this.listOfData = data 
+      this.row = this.listOfData.length
     })
-      console.log(this.listOfData)
       }
-
-  sortFn = (a : any, b: any) => {
-    if(this.sort == "task_name")
-      return a.name.localeCompare(b.task_name)
-    else
-      if(this.sort == "task_created_date")
-        return a.date.localeCompare(b.task_created_date)
-      else
-        if(this.sort == "id")
-          return a.id - b.id
-        else
-          return a.task_completed - b.task_completed
+  order = "ASC"
+  sortFn = (event:any) => {
+    console.log(event)
+    var target = event.target || event.srcElement || event.currentTarget;
+    var col = target.parentNode.parentNode.parentNode.parentNode.attributes[1].nodeValue
+    this.sort = col
+    if (this.order == "ASC"){
+      this.order = "DESC"
+    }else{
+      this.order = "ASC"
+    }
+    this.httpservice.sort(this.sort, this.order).subscribe((data:any) => {
+      this.listOfData = data
+      console.log(data)
+      this.row = this.listOfData.length
+    })
   };
 
 
@@ -123,10 +128,12 @@ export class AppComponent {
     console.log(list)
     if (list.length > 1 || list.length == 0){
       this.listOfData = this.listOfDataUnfiltered
+       this.row = this.listOfData.length
     }
     else{
       this.httpservice.getFiltered(list[0]).subscribe((data:any) => {
         this.listOfData = data
+        this.row = this.listOfData.length
       })
     }
   })
